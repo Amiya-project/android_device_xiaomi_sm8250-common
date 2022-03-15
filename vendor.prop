@@ -275,9 +275,11 @@ persist.vendor.sensors.sync_request=true
 # Shutdown
 sys.vendor.shutdown.waittime=500
 
+# Telephony
+telephony.active_modems.max_count=2
+
 # USB
 vendor.usb.diag.func.name=diag
-vendor.usb.dpl.inst.name=dpl
 vendor.usb.qdss.inst.name=qdss
 vendor.usb.rmnet.func.name=gsi
 vendor.usb.rmnet.inst.name=rmnet
