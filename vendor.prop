@@ -146,6 +146,7 @@ ro.vendor.bluetooth.wipower=false
 vendor.qcom.bluetooth.soc=hastings
 persist.vendor.btstack.enable.lpa=true
 vendor.hw.fm.init=0
+persist.vendor.btstack.enable.lpa=true
 
 # Chipset
 ro.soc.manufacturer=QTI
