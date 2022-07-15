@@ -1,3 +1,6 @@
+# CIT Sensor
+vendor.xiaomi.hardware.citsensorservice::ICitSensorService                                          u:object_r:vendor_hal_citsensorservice_xiaomi_hwservice:s0
+
 # Fingerprint
 com.fingerprints.extension::IFingerprintNavigation                                                  u:object_r:hal_fingerprint_hwservice:s0
 com.fingerprints.extension::IFingerprintSensorTest                                                  u:object_r:hal_fingerprint_hwservice:s0
