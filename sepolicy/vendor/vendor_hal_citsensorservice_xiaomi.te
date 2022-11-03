@@ -30,3 +30,6 @@ allow vendor_hal_citsensorservice_xiaomi_default mnt_vendor_file:dir search;
 allow vendor_hal_citsensorservice_xiaomi_default sysfs:file read;
 allow vendor_hal_citsensorservice_xiaomi_default vendor_persist_sensors_file:dir search;
 allow vendor_hal_citsensorservice_xiaomi_default vendor_persist_sensors_file:file rw_file_perms;
+
+# Allow to use wakelock
+wakelock_use(vendor_hal_citsensorservice_xiaomi_default)
