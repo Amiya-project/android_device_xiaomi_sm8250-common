@@ -347,6 +347,20 @@ case "$console_config" in
         ;;
 esac
 
+function write_irq_affinity() {
+    # Arguments:
+    # $1 = irq name
+    # $2 = cpu id
+    irq_dir="$(dirname /proc/irq/*/$1)"
+    [ -d "$irq_dir" ] && echo $2 > "${irq_dir}/smp_affinity_list"
+}
+
+# IRQ Tuning
+# kgsl_3d0_irq -> CPU 1
+# msm_drm -> CPU 2
+write_irq_affinity kgsl_3d0_irq 1
+write_irq_affinity msm_drm 2
+
 # Parse misc partition path and set property
 misc_link=$(ls -l /dev/block/bootdevice/by-name/misc)
 real_path=${misc_link##*>}
