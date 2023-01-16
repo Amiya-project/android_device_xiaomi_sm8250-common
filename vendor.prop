@@ -273,6 +273,9 @@ sys.fflag.override.settings_seamless_transfer=true
 persist.vendor.sensors.allow_non_default_discovery=true
 persist.vendor.sensors.sync_request=true
 
+# Subsystem silent restart
+persist.vendor.ssr.restart_level=ALL_ENABLE
+
 # Telephony
 telephony.active_modems.max_count=2
 
