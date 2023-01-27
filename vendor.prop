@@ -205,6 +205,7 @@ persist.backup.ntpServer=0.pool.ntp.org
 debug.egl.hw=1
 debug.gralloc.enable_fb_ubwc=1
 debug.mdpcomp.logs=0
+debug.sf.auto_latch_unsignaled=0
 debug.sf.enable_advanced_sf_phase_offset=1
 debug.sf.enable_gl_backpressure=1
 debug.sf.high_fps_early_gl_phase_offset_ns=-2000000
