@@ -24,6 +24,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.SystemProperties;
 import android.util.Log;
+
 import androidx.preference.PreferenceManager;
 
 import org.lineageos.settings.thermal.ThermalUtils;
