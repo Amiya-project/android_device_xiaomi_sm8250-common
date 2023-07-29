@@ -1,4 +1,5 @@
-# Unpinned blobs from munch-user 13 RKQ1.211001.001 V14.0.3.0.TLMMIXM release-keys
+# Unpinned blobs from alioth-user 13 TKQ1.220829.002 V14.0.7.0.TKHCNXM release-keys, unless pinned
+# lmi: lmi-user 11 RKQ1.200826.002 V12.5.3.0.RJKMIXM release-keys
 
 # ADSP
 vendor/bin/adsprpcd
