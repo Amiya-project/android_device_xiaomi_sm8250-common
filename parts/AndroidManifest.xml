@@ -51,10 +51,15 @@
             android:permission="PopupCameraService" />
 
         <service
+            android:name=".display.ColorService"
+            android:permission="ColorService">
+        </service>
+
+        <service
             android:name=".thermal.ThermalService"
             android:exported="true"
             android:permission="ThermalService" />
-
+            
         <activity
             android:name=".popupcamera.PopupCameraSettingsActivity"
             android:exported="false"
@@ -105,5 +110,4 @@
         </activity>
 
     </application>
-
 </manifest>

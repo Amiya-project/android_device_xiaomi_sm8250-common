@@ -22,6 +22,11 @@
 # CIT Sensor
 /vendor/bin/hw/vendor\.xiaomi\.hardware\.citsensorservice@1\.1-service                              u:object_r:vendor_hal_citsensorservice_xiaomi_default_exec:s0
 
+# Displayfeature
+/vendor/bin/displayfeature                                                                          u:object_r:vendor_displayfeature_exec:s0
+/vendor/bin/hw/vendor\.xiaomi\.hardware\.displayfeature@1\.0-service                                u:object_r:vendor_hal_displayfeature_xiaomi_default_exec:s0
+/dev/mi_display/disp_feature                                                                        u:object_r:graphics_device:s0
+
 # Fingerprint
 /vendor/bin/hw/android\.hardware\.biometrics\.fingerprint-service\.xiaomi                           u:object_r:hal_fingerprint_default_exec:s0
 
