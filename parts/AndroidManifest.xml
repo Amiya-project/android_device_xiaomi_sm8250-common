@@ -50,6 +50,11 @@
             android:exported="true"
             android:permission="ThermalService" />
 
+        <service
+            android:name=".display.ColorService"
+            android:permission="ColorService">
+        </service>
+            
         <activity
             android:name=".thermal.ThermalActivity"
             android:exported="false"
@@ -76,5 +81,4 @@
         </activity>
 
     </application>
-
 </manifest>
