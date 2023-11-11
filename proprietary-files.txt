@@ -22,6 +22,7 @@ vendor/lib/libdrc.so
 vendor/lib/libqtigef.so
 vendor/lib/libssrec.so
 vendor/lib/libsurround_3mic_proc.so
+vendor/lib/libwfdaac_vendor.so
 
 # Audio FX modules
 vendor/lib/soundfx/libasphere.so
