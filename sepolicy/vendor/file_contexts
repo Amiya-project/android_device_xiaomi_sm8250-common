@@ -108,3 +108,10 @@
 # WiFi
 /vendor/bin/nv_mac                                                      u:object_r:vendor_wcnss_service_exec:s0
 /data/vendor/mac_addr(/.*)?                                             u:object_r:vendor_wifi_vendor_data_file:s0
+
+# Data files
+/data/vendor/dolby(/.*)?                    u:object_r:vendor_data_file:s0
+/data/vendor/multimedia(/.*)?               u:object_r:vendor_data_file:s0
+
+# Dolby HALs
+/(vendor|system/vendor)/bin/hw/vendor\.dolby\.hardware\.dms@2\.0-service                                   u:object_r:hal_dms_default_exec:s0
