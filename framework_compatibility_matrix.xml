@@ -7,6 +7,14 @@
             <instance>default</instance>
         </interface>
     </hal>
+    <hal format="hidl" optional="true">
+        <name>android.hardware.boot</name>
+        <version>1.2</version>
+        <interface>
+            <name>IBootControl</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
     <hal format="aidl" optional="true">
         <name>android.hardware.bluetooth.audio</name>
         <version>2-3</version>
@@ -37,6 +45,30 @@
         <interface>
             <name>IGnss</name>
             <instance>gnss_vendor</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
+        <name>android.hardware.health</name>
+        <version>1</version>
+        <interface>
+            <name>IHealth</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
+        <name>android.hardware.light</name>
+        <version>2</version>
+        <interface>
+            <name>ILights</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
+        <name>android.hardware.nfc</name>
+        <version>1</version>
+        <interface>
+            <name>INfc</name>
+            <instance>default</instance>
         </interface>
     </hal>
     <hal format="aidl" optional="true">
@@ -174,6 +206,14 @@
         <version>1.0</version>
         <interface>
             <name>IAlarm</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
+        <name>android.hardware.audio.sounddose</name>
+        <version>1</version>
+        <interface>
+            <name>ISoundDoseFactory</name>
             <instance>default</instance>
         </interface>
     </hal>
