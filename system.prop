@@ -1,6 +1,3 @@
-# Bluetooth
-persist.vendor.btstack.enable.twsplus=true
-
 # Camera
 camera.disable_zsl_mode=true
 
