@@ -4,6 +4,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# D2TW
+on boot
+    chown system system /sys/touchpanel/double_tap
+
 # Fingerprint
 on init
     chmod 0664 /dev/fortsense_fp
