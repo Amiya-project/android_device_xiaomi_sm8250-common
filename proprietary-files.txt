@@ -1,4 +1,4 @@
-# Unpinned blobs from alioth-user 13 TKQ1.220829.002 V14.0.7.0.TKHCNXM release-keys, unless pinned
+# Unpinned blobs from alioth-user 13 TKQ1.220829.002 V14.0.8.0.TKHCNXM release-keys, unless pinned
 # lmi: lmi-user 11 RKQ1.200826.002 V12.5.3.0.RJKMIXM release-keys
 
 # ADSP
