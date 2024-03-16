@@ -5,6 +5,9 @@ genfscon sysfs /kernel/boot_cdsp/boot                                           
 genfscon sysfs /devices/platform/soc/ae00000.qcom,mdss_mdp/idle_state                               u:object_r:vendor_sysfs_graphics:s0
 genfscon sysfs /devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/dynamic_fps        u:object_r:vendor_sysfs_graphics:s0
 
+# Display Exposure
+genfscon sysfs /devices/platform/soc/soc:qcom,dsi-display-primary/dimlayer_exposure                 u:object_r:vendor_sysfs_graphics:s0
+
 # Fingerprint
 genfscon sysfs /devices/platform/soc/soc:fingerprint_fpc                                            u:object_r:vendor_sysfs_fingerprint:s0
 genfscon sysfs /devices/platform/soc/soc:fingerprint_fpc/wakeup_enable                              u:object_r:vendor_sysfs_fingerprint:s0
