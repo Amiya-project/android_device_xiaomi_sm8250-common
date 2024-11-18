@@ -24,6 +24,12 @@ sh_binary {
 }
 
 sh_binary {
+    name: "init.panel_info.sh",
+    src: "bin/init.panel_info.sh",
+    vendor: true,
+}
+
+sh_binary {
     name: "init.qcom.early_boot.sh",
     src: "bin/init.qcom.early_boot.sh",
     vendor: true,

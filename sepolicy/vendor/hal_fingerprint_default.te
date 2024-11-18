@@ -52,3 +52,5 @@ get_prop(hal_fingerprint_default, vendor_adsprpc_prop)
 
 # Allow access to RTC
 r_dir_file(hal_fingerprint_default, sysfs_rtc)
+
+get_prop(hal_fingerprint_default, vendor_display_prop)
