@@ -294,6 +294,11 @@ service vendor.mdm_launcher /vendor/bin/sh /vendor/bin/init.mdm.sh
     class core
     oneshot
 
+service panel-info-sh /system/vendor/bin/sh /vendor/bin/init.panel_info.sh
+    class core
+    user root
+    oneshot
+
 on property:init.svc.vendor.per_mgr=running
     start vendor.per_proxy
 

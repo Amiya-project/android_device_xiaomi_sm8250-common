@@ -10,3 +10,5 @@ allow vendor_qti_init_shell vendor_wifi_vendor_data_file:file r_file_perms;
 
 allow vendor_qti_init_shell proc:dir r_dir_perms;
 allow vendor_qti_init_shell proc:file rw_file_perms;
+
+set_prop(vendor_qti_init_shell, vendor_display_prop)
