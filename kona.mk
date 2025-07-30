@@ -258,6 +258,8 @@ PRODUCT_PACKAGES += \
     media_codecs_performance_kona.xml \
     video_system_specs.json
 
+$(call soong_config_set_bool,stagefright,target_disable_thumbnail_block_model,true)
+
 # NFC
 PRODUCT_PACKAGES += \
     android.hardware.nfc-service.nxp \
