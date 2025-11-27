@@ -285,4 +285,15 @@
          or a single SIM device can have 1 phones/logical modems, but 2 physical slots (one eSIM
          and one pSIM) -->
     <integer name="config_num_physical_slots">2</integer>
+
+    <!-- Array of:
+    - Path to fast charging status file
+    - Delimiter ";"
+    - Value if fast charging is active
+    Used to detect whether an oem fast charger is active
+    Example: <item>/sys/class/power_supply/battery/fastchg_status;1</item>
+    -->
+    <string-array name="config_oemFastChargerStatusPaths" translatable="false">
+        <item>/sys/class/power_supply/bms/fastcharge_mode;1</item>
+    </string-array>
 </resources>
