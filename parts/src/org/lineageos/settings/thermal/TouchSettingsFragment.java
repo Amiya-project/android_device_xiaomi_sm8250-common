@@ -22,6 +22,8 @@ import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
+import androidx.preference.Preference;
+import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceManager;
 
 import com.android.settingslib.widget.MainSwitchPreference;
@@ -31,7 +33,8 @@ import com.android.settingslib.widget.SliderPreference;
 import org.lineageos.settings.R;
 
 public class TouchSettingsFragment extends SettingsBasePreferenceFragment
-        implements SharedPreferences.OnSharedPreferenceChangeListener, OnCheckedChangeListener {
+        implements SharedPreferences.OnSharedPreferenceChangeListener, OnCheckedChangeListener,
+        OnPreferenceChangeListener {
 
     private SharedPreferences mSharedPrefs;
     private SliderPreference mTouchSensitivity;
@@ -57,6 +60,7 @@ public class TouchSettingsFragment extends SettingsBasePreferenceFragment
 
         mGameMode = (MainSwitchPreference) findPreference(Constants.PREF_TOUCH_GAME_MODE);
         mGameMode.addOnSwitchChangeListener(this);
+        mGameMode.setOnPreferenceChangeListener(this);
 
         mTouchResistant = (SliderPreference) findPreference(Constants.PREF_TOUCH_RESISTANT);
         mTouchResponse = (SliderPreference) findPreference(Constants.PREF_TOUCH_RESPONSE);
@@ -86,6 +90,17 @@ public class TouchSettingsFragment extends SettingsBasePreferenceFragment
     }
 
     @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if (preference == mGameMode) {
+            boolean isChecked = (Boolean) newValue;
+            mSharedPrefs.edit().putBoolean(Constants.PREF_TOUCH_GAME_MODE, isChecked).apply();
+            onCheckedChanged(null, isChecked);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key) {
         if (Constants.PREF_TOUCH_GAME_MODE.equals(key)) {
             updateTouchModes(sharedPrefs.getBoolean(key, false) ? 1 : 0,
@@ -101,7 +116,6 @@ public class TouchSettingsFragment extends SettingsBasePreferenceFragment
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mGameMode.setChecked(isChecked);
         mTouchSensitivity.setEnabled(isChecked);
         mTouchResponse.setEnabled(isChecked);
         mTouchResistant.setEnabled(isChecked);
