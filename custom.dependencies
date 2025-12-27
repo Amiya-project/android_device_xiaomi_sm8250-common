@@ -11,5 +11,10 @@
     "remote": "gitlab",
     "repository": "NoPrincessHere/proprietary_vendor_xiaomi_sm8250-common",
     "target_path": "vendor/xiaomi/sm8250-common"
+  },
+  {
+    "repository": "NoPrincessHere/proprietary_vendor_oneplus_dolby",
+    "target_path": "vendor/oneplus/dolby",
+    "remote": "gitlab"
   }
 ]
