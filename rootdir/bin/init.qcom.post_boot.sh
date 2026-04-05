@@ -813,8 +813,6 @@ function configure_zram_parameters() {
     MemTotalStr=`cat /proc/meminfo | grep MemTotal`
     MemTotal=${MemTotalStr:16:8}
 
-    low_ram=`getprop ro.config.low_ram`
-
     # Zram disk - 75% for Go devices.
     # For 512MB Go device, size = 384MB, set same for Non-Go.
     # For 1GB Go device, size = 768MB, set same for Non-Go.
@@ -827,17 +825,10 @@ function configure_zram_parameters() {
     if [ $RamSizeGB -le 2 ]; then
         let zRamSizeMB="( $RamSizeGB * 1024 ) * 3 / 4"
     else
-        let zRamSizeMB="( $RamSizeGB * 1024 ) / 2"
+        let zRamSizeMB="( $RamSizeGB * 1024 )"
     fi
 
-    # use MB avoid 32 bit overflow
-    if [ $zRamSizeMB -gt 4096 ]; then
-        let zRamSizeMB=4096
-    fi
-
-    if [ "$low_ram" == "true" ]; then
-        echo lz4 > /sys/block/zram0/comp_algorithm
-    fi
+    echo zstd > /sys/block/zram0/comp_algorithm
 
     if [ -f /sys/block/zram0/disksize ]; then
         disksize=`cat /sys/block/zram0/disksize`
@@ -940,7 +931,7 @@ echo $LimitSize > /dev/memcg/camera/memory.soft_limit_in_bytes
 # Set allocstall_threshold to 0 for all targets.
 # Set swappiness to 60 for all targets
 echo 0 > /sys/module/vmpressure/parameters/allocstall_threshold
-echo 60 > /proc/sys/vm/swappiness
+echo 100 > /proc/sys/vm/swappiness
 
 # Disable wsf for all targets beacause we are using efk.
 # wsf Range : 1..1000 So set to bare minimum value 1.
