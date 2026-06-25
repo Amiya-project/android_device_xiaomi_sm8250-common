@@ -149,10 +149,6 @@ PRODUCT_PACKAGES += \
 
 $(call soong_config_set,libcameraservice,ext_lib,//$(LOCAL_PATH):libcameraservice_extension.xiaomi_sm8250)
 
-# Configstore
-PRODUCT_PACKAGES += \
-    disable_configstore
-
 # Consumer IR
 ifneq ($(TARGET_IS_TABLET),true)
 PRODUCT_PACKAGES += \
