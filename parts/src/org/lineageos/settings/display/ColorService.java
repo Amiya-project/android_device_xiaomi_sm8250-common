@@ -34,16 +34,17 @@ public class ColorService extends Service {
     private static final int DEFAULT_COLOR_MODE = SystemProperties.getInt(
             "persist.sys.sf.native_mode", 0);
 
-    private static final DfParams STANDARD_PARAMS = new DfParams(2, 2, 255);
+    private static final DfParams STANDARD_PARAMS = new DfParams(0, 2, 255);
 
     /* color mode -> displayfeature (mode, value, cookie) */
     private static final Map<Integer, DfParams> COLOR_MAP = Map.of(
-        258 /* vivid */, new DfParams(0, 2, 255),
-        256 /* saturated */, new DfParams(1, 2, 255),
-        257 /* standard */, STANDARD_PARAMS,
-        269 /* original */, new DfParams(26, 1, 0),
-        268 /* p3 */, new DfParams(26, 2, 0),
-        267 /* srgb */, new DfParams(26, 3, 0)
+        258 /* Vivid */, STANDARD_PARAMS,
+        256 /* Saturated */, new DfParams(1, 2, 255),
+        257 /* Original */, new DfParams(2, 2, 255),
+        266 /* expert-Saturated */, new DfParams(26, 2, 0),
+        269 /* expert-Original */, new DfParams(26, 1, 0),
+        268 /* expert-P3 */, new DfParams(26, 2, 2),
+        267 /* expert-sRGB */, new DfParams(26, 3, 0)
     );
     /* original/p3/srgb */
     private static final int EXPERT_MODE = 26;
