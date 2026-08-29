@@ -61,6 +61,7 @@ on init
 
     # Allow both charger and hal_light to access panel0 backlight
     chown system system /sys/class/backlight/panel0-backlight/brightness
+    chown system system /sys/class/backlight/panel0-backlight/bl_df
 
 on post-fs
     mkdir /mnt/vendor/dsp 0770 root root

@@ -17,20 +17,14 @@
 */
 package org.lineageos.settings.display;
 
-import android.annotation.TargetApi;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 import androidx.preference.PreferenceManager;
 
-import org.lineageos.settings.display.DisplayNodes;
-import org.lineageos.settings.utils.FileUtils;
-
 public class DcDimmingTileService extends TileService {
 
     private String DC_DIMMING_ENABLE_KEY;
-    private String DC_DIMMING_NODE;
 
     private void updateUI(boolean enabled) {
         final Tile tile = getQsTile();
@@ -38,11 +32,20 @@ public class DcDimmingTileService extends TileService {
         tile.updateTile();
     }
 
+    private void updateUnavailableUI() {
+        final Tile tile = getQsTile();
+        tile.setState(Tile.STATE_UNAVAILABLE);
+        tile.updateTile();
+    }
+
     @Override
     public void onStartListening() {
         super.onStartListening();
         DC_DIMMING_ENABLE_KEY = DisplayNodes.getDcDimmingEnableKey();
-        DC_DIMMING_NODE = DisplayNodes.getDcDimmingNode();
+        if (!DisplayUtils.isDcSupported()) {
+            updateUnavailableUI();
+            return;
+        }
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         updateUI(sharedPrefs.getBoolean(DC_DIMMING_ENABLE_KEY, false));
     }
@@ -55,10 +58,15 @@ public class DcDimmingTileService extends TileService {
     @Override
     public void onClick() {
         super.onClick();
+        if (!DisplayUtils.isDcSupported()) {
+            updateUnavailableUI();
+            return;
+        }
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         final boolean enabled = !(sharedPrefs.getBoolean(DC_DIMMING_ENABLE_KEY, false));
-        FileUtils.writeLine(DC_DIMMING_NODE, enabled ? "1" : "0");
-        sharedPrefs.edit().putBoolean(DC_DIMMING_ENABLE_KEY, enabled).commit();
-        updateUI(enabled);
+        if (DisplayUtils.setDcDimming(enabled)) {
+            sharedPrefs.edit().putBoolean(DC_DIMMING_ENABLE_KEY, enabled).commit();
+            updateUI(enabled);
+        }
     }
 }

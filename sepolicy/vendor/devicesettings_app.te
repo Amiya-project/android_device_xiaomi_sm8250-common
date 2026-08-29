@@ -19,3 +19,5 @@ binder_call(devicesettings_app, vendor_hal_displayfeature_xiaomi)
 allow devicesettings_app {
   vendor_hal_displayfeature_xiaomi_hwservice
 }:hwservice_manager find;
+
+get_prop(devicesettings_app, vendor_displayfeature_prop)

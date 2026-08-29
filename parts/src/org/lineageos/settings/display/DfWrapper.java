@@ -14,7 +14,6 @@ import vendor.xiaomi.hardware.displayfeature.V1_0.IDisplayFeature;
 public class DfWrapper {
 
     private static final String TAG = "DisplayFeatureWrapper";
-
     private static IDisplayFeature mDisplayFeature;
 
     private static DeathRecipient mDeathRecipient = (cookie) -> {
@@ -35,17 +34,19 @@ public class DfWrapper {
         return mDisplayFeature;
     }
 
-    public static void setDisplayFeature(DfParams params) {
+    public static boolean setDisplayFeature(DfParams params) {
         final IDisplayFeature displayFeature = getDisplayFeature();
         if (displayFeature == null) {
             Log.e(TAG, "setDisplayFeatureParams: displayFeature is null!");
-            return;
+            return false;
         }
         Log.d(TAG, "setDisplayFeatureParams: " + params);
         try {
             displayFeature.setFeature(0, params.mode, params.value, params.cookie);
+            return true;
         } catch (Exception e) {
             Log.e(TAG, "setDisplayFeatureParams failed!", e);
+            return false;
         }
     }
 

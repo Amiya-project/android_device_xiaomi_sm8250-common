@@ -33,7 +33,6 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
 
     private SwitchPreferenceCompat mDcDimmingPreference;
     private String DC_DIMMING_ENABLE_KEY;
-    private String DC_DIMMING_NODE;
     private SwitchPreferenceCompat mHBMPreference;
     private String HBM_ENABLE_KEY;
     private String HBM_NODE;
@@ -41,18 +40,15 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         DC_DIMMING_ENABLE_KEY = DisplayNodes.getDcDimmingEnableKey();
-        DC_DIMMING_NODE = DisplayNodes.getDcDimmingNode();
         HBM_ENABLE_KEY = DisplayNodes.getHbmEnableKey();
         HBM_NODE = DisplayNodes.getHbmNode();
 
         addPreferencesFromResource(R.xml.display_settings);
         mDcDimmingPreference = (SwitchPreferenceCompat) findPreference(DC_DIMMING_ENABLE_KEY);
-        if (FileUtils.fileExists(DC_DIMMING_NODE)) {
-            mDcDimmingPreference.setEnabled(true);
+        if (DisplayUtils.isDcSupported()) {
             mDcDimmingPreference.setOnPreferenceChangeListener(this);
         } else {
-            mDcDimmingPreference.setSummary(R.string.dc_dimming_enable_summary_not_supported);
-            mDcDimmingPreference.setEnabled(false);
+            getPreferenceScreen().removePreference(mDcDimmingPreference);
         }
         mHBMPreference = (SwitchPreferenceCompat) findPreference(HBM_ENABLE_KEY);
         if (FileUtils.fileExists(HBM_NODE)) {
@@ -67,7 +63,7 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (DC_DIMMING_ENABLE_KEY.equals(preference.getKey())) {
-            FileUtils.writeLine(DC_DIMMING_NODE, (Boolean) newValue ? "1":"0");
+            return DisplayUtils.setDcDimming((Boolean) newValue);
         }
         if (HBM_ENABLE_KEY.equals(preference.getKey())) {
             FileUtils.writeLine(HBM_NODE, (Boolean) newValue ? "0x10000" : "0xF0000");
