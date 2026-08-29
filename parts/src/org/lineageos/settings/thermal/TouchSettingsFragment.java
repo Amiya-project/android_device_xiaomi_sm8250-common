@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2020 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,17 +26,17 @@ import androidx.preference.PreferenceManager;
 
 import com.android.settingslib.widget.MainSwitchPreference;
 import com.android.settingslib.widget.SettingsBasePreferenceFragment;
+import com.android.settingslib.widget.SliderPreference;
 
 import org.lineageos.settings.R;
-import org.lineageos.settings.widget.SeekBarPreference;
 
 public class TouchSettingsFragment extends SettingsBasePreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener, OnCheckedChangeListener {
 
     private SharedPreferences mSharedPrefs;
-    private SeekBarPreference mTouchSensitivity;
-    private SeekBarPreference mTouchResponse;
-    private SeekBarPreference mTouchResistant;
+    private SliderPreference mTouchSensitivity;
+    private SliderPreference mTouchResponse;
+    private SliderPreference mTouchResistant;
     private MainSwitchPreference mGameMode;
 
     private String packageName = "";
@@ -58,9 +58,9 @@ public class TouchSettingsFragment extends SettingsBasePreferenceFragment
         mGameMode = (MainSwitchPreference) findPreference(Constants.PREF_TOUCH_GAME_MODE);
         mGameMode.addOnSwitchChangeListener(this);
 
-        mTouchResistant = (SeekBarPreference) findPreference(Constants.PREF_TOUCH_RESISTANT);
-        mTouchResponse = (SeekBarPreference) findPreference(Constants.PREF_TOUCH_RESPONSE);
-        mTouchSensitivity = (SeekBarPreference) findPreference(Constants.PREF_TOUCH_SENSITIVITY);
+        mTouchResistant = (SliderPreference) findPreference(Constants.PREF_TOUCH_RESISTANT);
+        mTouchResponse = (SliderPreference) findPreference(Constants.PREF_TOUCH_RESPONSE);
+        mTouchSensitivity = (SliderPreference) findPreference(Constants.PREF_TOUCH_SENSITIVITY);
         updateDefaults();
     }
 
@@ -116,9 +116,9 @@ public class TouchSettingsFragment extends SettingsBasePreferenceFragment
         mTouchResponse.setEnabled(modeEnabled);
         mTouchResistant.setEnabled(modeEnabled);
 
-        mTouchResponse.setProgress(Integer.parseInt(values[Constants.TOUCH_RESPONSE]));
-        mTouchSensitivity.setProgress(Integer.parseInt(values[Constants.TOUCH_SENSITIVITY]));
-        mTouchResistant.setProgress(Integer.parseInt(values[Constants.TOUCH_RESISTANT]));
+        mTouchResponse.setValue(Integer.parseInt(values[Constants.TOUCH_RESPONSE]));
+        mTouchSensitivity.setValue(Integer.parseInt(values[Constants.TOUCH_SENSITIVITY]));
+        mTouchResistant.setValue(Integer.parseInt(values[Constants.TOUCH_RESISTANT]));
     }
 
     private void writeTouchValues(String modes) {
