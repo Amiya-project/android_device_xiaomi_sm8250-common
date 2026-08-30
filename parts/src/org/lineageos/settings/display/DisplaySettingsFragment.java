@@ -16,14 +16,12 @@
 
 package org.lineageos.settings.display;
 
-import android.content.Context;
 import android.os.Bundle;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.SwitchPreferenceCompat;
 
 import org.lineageos.settings.R;
-import org.lineageos.settings.display.DisplayNodes;
 import org.lineageos.settings.utils.FileUtils;
 
 import com.android.settingslib.widget.SettingsBasePreferenceFragment;
@@ -35,13 +33,11 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
     private String DC_DIMMING_ENABLE_KEY;
     private SwitchPreferenceCompat mHBMPreference;
     private String HBM_ENABLE_KEY;
-    private String HBM_NODE;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         DC_DIMMING_ENABLE_KEY = DisplayNodes.getDcDimmingEnableKey();
         HBM_ENABLE_KEY = DisplayNodes.getHbmEnableKey();
-        HBM_NODE = DisplayNodes.getHbmNode();
 
         addPreferencesFromResource(R.xml.display_settings);
         mDcDimmingPreference = (SwitchPreferenceCompat) findPreference(DC_DIMMING_ENABLE_KEY);
@@ -51,7 +47,7 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
             getPreferenceScreen().removePreference(mDcDimmingPreference);
         }
         mHBMPreference = (SwitchPreferenceCompat) findPreference(HBM_ENABLE_KEY);
-        if (FileUtils.fileExists(HBM_NODE)) {
+        if (FileUtils.fileExists(DisplayNodes.getHbmNode())) {
             mHBMPreference.setEnabled(true);
             mHBMPreference.setOnPreferenceChangeListener(this);
         } else {
@@ -66,7 +62,7 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
             return DisplayUtils.setDcDimming((Boolean) newValue);
         }
         if (HBM_ENABLE_KEY.equals(preference.getKey())) {
-            FileUtils.writeLine(HBM_NODE, (Boolean) newValue ? "0x10000" : "0xF0000");
+            return DisplayUtils.setHbmEnabled(requireContext(), (Boolean) newValue);
         }
         return true;
     }
