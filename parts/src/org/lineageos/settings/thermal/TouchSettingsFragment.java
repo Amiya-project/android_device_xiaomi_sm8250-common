@@ -65,7 +65,21 @@ public class TouchSettingsFragment extends SettingsBasePreferenceFragment
         mTouchResponse.setOnPreferenceChangeListener(this);
         mTouchSensitivity = (SliderPreference) findPreference(Constants.PREF_TOUCH_SENSITIVITY);
         mTouchSensitivity.setOnPreferenceChangeListener(this);
+        setupSlider(mTouchResistant);
+        setupSlider(mTouchResponse);
+        setupSlider(mTouchSensitivity);
         updateDefaults();
+    }
+
+    private void setupSlider(SliderPreference sliderPreference) {
+        if (sliderPreference != null) {
+            sliderPreference.setOnPreferenceChangeListener(this);
+            sliderPreference.setMax(3);
+            sliderPreference.setMin(0);
+            sliderPreference.setSliderIncrement(1);
+            sliderPreference.setShowSliderValue(true);
+            sliderPreference.setHapticFeedbackMode(1);
+        }
     }
 
     @Override
