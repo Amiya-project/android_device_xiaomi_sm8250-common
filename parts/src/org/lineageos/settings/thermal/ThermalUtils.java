@@ -72,14 +72,7 @@ public final class ThermalUtils {
         WindowManager mWindowManager = context.getSystemService(WindowManager.class);
         mDisplay = mWindowManager.getDefaultDisplay();
 
-        try {
-            mTouchFeature = ITouchFeature.getService();
-        } catch (RemoteException e) {
-            // Do nothing
-        } catch (NoSuchElementException e) {
-            // Do nothing
-        }
-
+        getTouchFeature();
     }
 
     public static void startService(Context context) {
@@ -206,6 +199,11 @@ public final class ThermalUtils {
             return;
         }
 
+        final ITouchFeature touchFeature = getTouchFeature();
+        if (touchFeature == null) {
+            return;
+        }
+
         String[] value = values.split(",");
         int gameMode = Integer.parseInt(value[Constants.TOUCH_GAME_MODE]);
         int touchResponse = Integer.parseInt(value[Constants.TOUCH_RESPONSE]);
@@ -213,17 +211,18 @@ public final class ThermalUtils {
         int touchResistant = Integer.parseInt(value[Constants.TOUCH_RESISTANT]);
         int touchActiveMode = (touchResponse != 0 && touchSensitivity != 0 && touchResistant != 0)
                 ? 1 : 0;
+        mTouchModeChanged = true;
         try {
-            mTouchFeature.setTouchMode(Constants.MODE_TOUCH_TOLERANCE, touchSensitivity);
-            mTouchFeature.setTouchMode(Constants.MODE_TOUCH_UP_THRESHOLD, touchResponse);
-            mTouchFeature.setTouchMode(Constants.MODE_TOUCH_EDGE_FILTER, touchResistant);
-            mTouchFeature.setTouchMode(Constants.MODE_TOUCH_GAME_MODE, gameMode);
-            mTouchFeature.setTouchMode(Constants.MODE_TOUCH_ACTIVE_MODE, touchActiveMode);
+            touchFeature.setTouchMode(Constants.MODE_TOUCH_TOLERANCE, touchSensitivity);
+            touchFeature.setTouchMode(Constants.MODE_TOUCH_UP_THRESHOLD, touchResponse);
+            touchFeature.setTouchMode(Constants.MODE_TOUCH_EDGE_FILTER, touchResistant);
+            touchFeature.setTouchMode(Constants.MODE_TOUCH_GAME_MODE, gameMode);
+            touchFeature.setTouchMode(Constants.MODE_TOUCH_ACTIVE_MODE, touchActiveMode);
         } catch (RemoteException e) {
-            // Do nothing
+            mTouchFeature = null;
+            return;
         }
 
-        mTouchModeChanged = true;
         updateTouchRotation();
     }
 
@@ -232,15 +231,21 @@ public final class ThermalUtils {
             return;
         }
 
+        final ITouchFeature touchFeature = getTouchFeature();
+        if (touchFeature == null) {
+            return;
+        }
+
         try {
-            mTouchFeature.resetTouchMode(Constants.MODE_TOUCH_GAME_MODE);
-            mTouchFeature.resetTouchMode(Constants.MODE_TOUCH_ACTIVE_MODE);
-            mTouchFeature.resetTouchMode(Constants.MODE_TOUCH_UP_THRESHOLD);
-            mTouchFeature.resetTouchMode(Constants.MODE_TOUCH_TOLERANCE);
-            mTouchFeature.resetTouchMode(Constants.MODE_TOUCH_EDGE_FILTER);
-            mTouchFeature.resetTouchMode(Constants.MODE_TOUCH_ROTATION);
+            touchFeature.resetTouchMode(Constants.MODE_TOUCH_GAME_MODE);
+            touchFeature.resetTouchMode(Constants.MODE_TOUCH_ACTIVE_MODE);
+            touchFeature.resetTouchMode(Constants.MODE_TOUCH_UP_THRESHOLD);
+            touchFeature.resetTouchMode(Constants.MODE_TOUCH_TOLERANCE);
+            touchFeature.resetTouchMode(Constants.MODE_TOUCH_EDGE_FILTER);
+            touchFeature.resetTouchMode(Constants.MODE_TOUCH_ROTATION);
         } catch (RemoteException e) {
-            // Do nothing
+            mTouchFeature = null;
+            return;
         }
 
         mTouchModeChanged = false;
@@ -248,6 +253,11 @@ public final class ThermalUtils {
 
     protected void updateTouchRotation() {
         if (!mTouchModeChanged) {
+            return;
+        }
+
+        final ITouchFeature touchFeature = getTouchFeature();
+        if (touchFeature == null) {
             return;
         }
 
@@ -268,9 +278,20 @@ public final class ThermalUtils {
         }
 
         try {
-            mTouchFeature.setTouchMode(Constants.MODE_TOUCH_ROTATION, touchRotation);
+            touchFeature.setTouchMode(Constants.MODE_TOUCH_ROTATION, touchRotation);
         } catch (RemoteException e) {
-            // Do nothing
+            mTouchFeature = null;
         }
+    }
+
+    private ITouchFeature getTouchFeature() {
+        if (mTouchFeature == null) {
+            try {
+                mTouchFeature = ITouchFeature.getService();
+            } catch (RemoteException | NoSuchElementException e) {
+                mTouchFeature = null;
+            }
+        }
+        return mTouchFeature;
     }
 }

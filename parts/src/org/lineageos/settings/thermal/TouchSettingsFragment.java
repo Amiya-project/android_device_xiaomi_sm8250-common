@@ -15,7 +15,6 @@
  */
 package org.lineageos.settings.thermal;
 
-import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -23,7 +22,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import androidx.preference.Preference;
-import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceManager;
 
 import com.android.settingslib.widget.MainSwitchPreference;
@@ -33,8 +31,7 @@ import com.android.settingslib.widget.SliderPreference;
 import org.lineageos.settings.R;
 
 public class TouchSettingsFragment extends SettingsBasePreferenceFragment
-        implements SharedPreferences.OnSharedPreferenceChangeListener, OnCheckedChangeListener,
-        OnPreferenceChangeListener {
+        implements OnCheckedChangeListener, Preference.OnPreferenceChangeListener {
 
     private SharedPreferences mSharedPrefs;
     private SliderPreference mTouchSensitivity;
@@ -46,7 +43,7 @@ public class TouchSettingsFragment extends SettingsBasePreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.touch_settings);
+        setPreferencesFromResource(R.xml.touch_settings, rootKey);
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         Bundle bundle = getArguments();
@@ -63,21 +60,12 @@ public class TouchSettingsFragment extends SettingsBasePreferenceFragment
         mGameMode.setOnPreferenceChangeListener(this);
 
         mTouchResistant = (SliderPreference) findPreference(Constants.PREF_TOUCH_RESISTANT);
+        mTouchResistant.setOnPreferenceChangeListener(this);
         mTouchResponse = (SliderPreference) findPreference(Constants.PREF_TOUCH_RESPONSE);
+        mTouchResponse.setOnPreferenceChangeListener(this);
         mTouchSensitivity = (SliderPreference) findPreference(Constants.PREF_TOUCH_SENSITIVITY);
+        mTouchSensitivity.setOnPreferenceChangeListener(this);
         updateDefaults();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mSharedPrefs.registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mSharedPrefs.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -92,26 +80,22 @@ public class TouchSettingsFragment extends SettingsBasePreferenceFragment
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference == mGameMode) {
-            boolean isChecked = (Boolean) newValue;
-            mSharedPrefs.edit().putBoolean(Constants.PREF_TOUCH_GAME_MODE, isChecked).apply();
-            onCheckedChanged(null, isChecked);
+            boolean enabled = (Boolean) newValue;
+            mSharedPrefs.edit().putBoolean(Constants.PREF_TOUCH_GAME_MODE, enabled).apply();
+            updateTouchModes(enabled ? 1 : 0, Constants.TOUCH_GAME_MODE);
+            onCheckedChanged(null, enabled);
+            return true;
+        } else if (preference == mTouchResponse) {
+            updateTouchModes((Integer) newValue, Constants.TOUCH_RESPONSE);
+            return true;
+        } else if (preference == mTouchSensitivity) {
+            updateTouchModes((Integer) newValue, Constants.TOUCH_SENSITIVITY);
+            return true;
+        } else if (preference == mTouchResistant) {
+            updateTouchModes((Integer) newValue, Constants.TOUCH_RESISTANT);
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPrefs, String key) {
-        if (Constants.PREF_TOUCH_GAME_MODE.equals(key)) {
-            updateTouchModes(sharedPrefs.getBoolean(key, false) ? 1 : 0,
-                    Constants.TOUCH_GAME_MODE);
-        } else if (Constants.PREF_TOUCH_RESPONSE.equals(key)) {
-            updateTouchModes(sharedPrefs.getInt(key, 0), Constants.TOUCH_RESPONSE);
-        } else if (Constants.PREF_TOUCH_SENSITIVITY.equals(key)) {
-            updateTouchModes(sharedPrefs.getInt(key, 0), Constants.TOUCH_SENSITIVITY);
-        } else if (Constants.PREF_TOUCH_RESISTANT.equals(key)) {
-            updateTouchModes(sharedPrefs.getInt(key, 0), Constants.TOUCH_RESISTANT);
-        }
     }
 
     @Override
