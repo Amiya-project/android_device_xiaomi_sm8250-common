@@ -17,20 +17,14 @@
 */
 package org.lineageos.settings.display;
 
-import android.annotation.TargetApi;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 import androidx.preference.PreferenceManager;
 
-import org.lineageos.settings.display.DisplayNodes;
-import org.lineageos.settings.utils.FileUtils;
-
 public class HBMTileService extends TileService {
 
     private String HBM_ENABLE_KEY;
-    private String HBM_NODE;
 
     private void updateUI(boolean enabled) {
         final Tile tile = getQsTile();
@@ -42,7 +36,6 @@ public class HBMTileService extends TileService {
     public void onStartListening() {
         super.onStartListening();
         HBM_ENABLE_KEY = DisplayNodes.getHbmEnableKey();
-        HBM_NODE = DisplayNodes.getHbmNode();
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         updateUI(sharedPrefs.getBoolean(HBM_ENABLE_KEY, false));
     }
@@ -57,8 +50,9 @@ public class HBMTileService extends TileService {
         super.onClick();
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         final boolean enabled = !(sharedPrefs.getBoolean(HBM_ENABLE_KEY, false));
-        FileUtils.writeLine(HBM_NODE, enabled ? "1" : "0");
-        sharedPrefs.edit().putBoolean(HBM_ENABLE_KEY, enabled).commit();
-        updateUI(enabled);
+        if (DisplayUtils.setHbmEnabled(this, enabled)) {
+            sharedPrefs.edit().putBoolean(HBM_ENABLE_KEY, enabled).commit();
+            updateUI(enabled);
+        }
     }
 }
