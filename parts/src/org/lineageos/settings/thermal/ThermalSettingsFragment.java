@@ -79,7 +79,7 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
         mSession.onResume();
         mActivityFilter = new ActivityFilter(getActivity().getPackageManager());
 
-        mAllPackagesAdapter = new AllPackagesAdapter(getActivity());
+        mAllPackagesAdapter = new AllPackagesAdapter();
 
         mThermalUtils = new ThermalUtils(getActivity());
     }
@@ -117,7 +117,6 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
 
     @Override
     public void onPackageListChanged() {
-        mActivityFilter.updateLauncherInfoList();
         rebuild();
     }
 
@@ -125,7 +124,6 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
     public void onRebuildComplete(ArrayList<ApplicationsState.AppEntry> entries) {
         if (entries != null) {
             handleAppEntries(entries);
-            mAllPackagesAdapter.notifyDataSetChanged();
         }
     }
 
@@ -171,13 +169,13 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
     private void handleAppEntries(List<ApplicationsState.AppEntry> entries) {
         final ArrayList<String> sections = new ArrayList<String>();
         final ArrayList<Integer> positions = new ArrayList<Integer>();
-        final PackageManager pm = getActivity().getPackageManager();
         String lastSectionIndex = null;
         int offset = 0;
 
         for (int i = 0; i < entries.size(); i++) {
-            final ApplicationInfo info = entries.get(i).info;
-            final String label = (String) info.loadLabel(pm);
+            final ApplicationsState.AppEntry entry = entries.get(i);
+            final ApplicationInfo info = entry.info;
+            final String label = entry.label;
             final String sectionIndex;
 
             if (!info.enabled) {
@@ -305,10 +303,6 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
         private List<ApplicationsState.AppEntry> mEntries = new ArrayList<>();
         private String[] mSections;
         private int[] mPositions;
-
-        public AllPackagesAdapter(Context context) {
-            mActivityFilter = new ActivityFilter(context.getPackageManager());
-        }
 
         @Override
         public int getItemCount() {
@@ -439,8 +433,6 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
 
         private ActivityFilter(PackageManager packageManager) {
             this.mPackageManager = packageManager;
-
-            updateLauncherInfoList();
         }
 
         public void updateLauncherInfoList() {
@@ -461,14 +453,15 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
         }
 
         @Override
+        public void init(Context context) {
+            updateLauncherInfoList();
+        }
+
+        @Override
         public boolean filterApp(ApplicationsState.AppEntry entry) {
-            boolean show = !mAllPackagesAdapter.mEntries.contains(entry.info.packageName);
-            if (show) {
-                synchronized (mLauncherResolveInfoList) {
-                    show = mLauncherResolveInfoList.contains(entry.info.packageName);
-                }
+            synchronized (mLauncherResolveInfoList) {
+                return mLauncherResolveInfoList.contains(entry.info.packageName);
             }
-            return show;
         }
     }
 }
