@@ -38,6 +38,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -342,6 +343,7 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
                     bundle.putString("packageName", entry.info.packageName);
                     touchSettingsFragment.setArguments(bundle);
                     getActivity().getSupportFragmentManager().beginTransaction()
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             .replace(R.id.content_frame, touchSettingsFragment, "touchSettingsFragment")
                             .addToBackStack(null)
                             .commit();
