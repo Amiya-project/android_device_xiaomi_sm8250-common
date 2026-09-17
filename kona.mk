@@ -249,6 +249,8 @@ PRODUCT_PACKAGES += \
     video_system_specs.json
 
 $(call soong_config_set_bool,stagefright,target_disable_thumbnail_block_model,true)
+$(call soong_config_set_bool,stagefright,target_use_legacy_mediacodecbuffer_setrange,true)
+$(call soong_config_set_bool,stagefright,target_restore_surface_generation_after_reconnect,true)
 
 # NFC
 PRODUCT_PACKAGES += \
